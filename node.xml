@@ -505,14 +505,13 @@ console.log("Arquivo input.txt.gz descompactado.");</code></pre>
 <p>Outras ferramentas são necessárias para o desenvolvimento:</p>
     <t t="IDE - Visual Studio Code (VSCode)" id="vscode">
         <p>O Visual studio code é um programa que pemite você editar e organizar seus programas em diversas linguagens de programação. Tem várias extensões que permitem facilitar o trabalho de desenvolvimento.</p>
-        <t t="Baixando o Visual Studio Code">
+        <h5>Baixando o Visual Studio Code</h5>
         <ul>
             <li>Acesse <a target= "_blank" href="https://code.visualstudio.com/">https://code.visualsultudio.com/</a> </li>
             <li>Clique em downloads. Clique em Download for Windows. Após download, execute o instalador</li> 
             <li>Na parte que define o caminho de instalação modifique para <code>C:\vscode</code> devido a política de instalação de programas da Vivo.</li>
             <li>Deixe as demais opções na seleção padrão.</li>
         </ul>
-        </t>
     </t>
     <t t="Controle de Versão - Git" id="git">
         <p>O Git é um programa de controle de versão. Ele permite gerenciar as modificações dos arquivos, permitindo recuperar versões anteriores e também facilita o controle de modificações de vários usuários que possam estar alterando o código ao mesmo tempo. Ele é muito útil para recuperar algum ponto do programa caso alguma modificação tenha dado errado. Ele é mais útil ainda quando se programa em grupo, pois permite mesclar a alterações feitas por várias pessoas ao mesmo tempo e manter todo mundo atualizado nas modificações, permitindo o trabalho em equipe de forma mais produtiva. O Git é gerenciador de versões padrão do VSCode</p>
@@ -557,7 +556,7 @@ console.log("Arquivo input.txt.gz descompactado.");</code></pre>
                 </li>
             </ul>
     </t>
-    <t t="Azure DevOps" id="vsts">
+    <t t="Repositório Git - Azure DevOps" id="azure">
     <p>O GitHub é um dos sites mais famosos para hospedagem de projetos git, no entanto somente permite projetos privados através de assinatura. Funcionários da telefonica através do Office 365, tem a opção de utilizar o Azure DevOps gratuitamente que permite armazenar os projetos na nuvem de forma privada e distribuí-los através do Git.</p>
     <h5>Criando um repositorio</h5>
     <ul>
@@ -597,17 +596,11 @@ $ git remote add origin https://davnorte.visualstudio.com/analytics/_git/analyti
 $ git push -u origin -all
 rmdir /S .git 
 -->
-    <p>Como todos os módulos NPM podem ser baixados via <code>npm install</code>, deve-se evitar que os módulos do NPM sejam sincronizados com o repositório VSTS. O site <a href="http://gitignore.io/">http://gitignore.io/</a> tem uma coleção de templates para vários tipos de projetos contendo as estruturas mais comuns que devem ser ignoradas. No nosso caso podemos começar com o do Node: <a href="https://gitignore.io/api/node">https://gitignore.io/api/node</a> e do Angular: <a href="https://gitignore.io/api/angular">https://gitignore.io/api/angular</a> que vai ignorar várias pastas e arquivos de manutenção. Basta criar um arquivo <code>.gitignore</code> na raiz do seu projeto e copiar e colar o conteudo do site.</p>  
+    <p>Como todos os módulos NPM podem ser baixados via <code>npm install</code>, deve-se evitar que os módulos do NPM sejam sincronizados com o repositório VSTS. O site <a href="http://gitignore.io/">http://gitignore.io/</a> tem uma coleção de templates para vários tipos de projetos contendo as estruturas mais comuns que devem ser ignoradas. No nosso caso podemos começar com o do Node: <a href="https://gitignore.io/api/node">https://gitignore.io/api/node</a> que vai ignorar várias pastas e arquivos de manutenção. Basta criar um arquivo <code>.gitignore</code> na raiz do seu projeto e copiar e colar o conteudo do site.</p>  
     </t>
-    <t t="Angular">
-        <p>O Angular é um framework para utilizar como front-end em páginas SPA, que contém apenas 1 arquivo index.html de inicialização e é fortemente concentrada com javascript. Desde a versão 2, o Angular conta com a ferramenta de desenvolvimento <b>Angular CLI</b> disponível no NPM. O <b>Angular CLI</b> é responsável por criar um ambiente de desenvolvimento completo composto por: <a href="https://webpack.js.org/">Webpack</a>, <a href="https://www.protractortest.org/">Protactor</a>, <a href="https://karma-runner.github.io/">Karma</a>, <a href="https://jasmine.github.io/">Jasmine</a>, <a href="https://palantir.github.io/tslint/">TSLint</a>,<a href="https://www.typescriptlang.org/">Typescript</a> entre outros. Para baixar o Angular CLI:</p> 
-        <pre><code class="sheel">$ npm install -g @angular/cli</code></pre>
-        <p>Outra ferramenta complementar é o <a href="https://marketplace.visualstudio.com/items?itemName=nrwl.angular-console">Angular Console</a> que fornece uma interface gráfica ao Angular CLI para utilização no Visual Studio Code.<br/>
-        <img src="https://raw.githubusercontent.com/nrwl/angular-console/master/static/angular-console-plugin.gif"/></p>
-    </t>
-    <t t="MongoDB">
+    <t t="Banco de dados - MongoDB" id="mongodb">
         <p>MongoDB é uma ferramenta para guardar informações utilizando NoSQL que utiliza o formato JSON binário (BSON) que é extremamente simples de manipular via javascript. Normalmente utilizar banco de dados relacionais (Ex:MySQL) exigirá que você transforme os dados em JSON aumentando a complexidade do projeto. Assim rapidamente o MongoDB se tornou um padrão do mundo Javascript. Caso não tenha instalado o MongoDB, é possível instalar conforme abaixo:</p>
-        <t t="Baixando o MongoDB">
+        <h5>Baixando o MongoDB</h5>
             <ul>
                 <li>Acesse <a target= "_blank" href="https://www.mongodb.com/">https://www.mongodb.com/</a> </li>
                 <li>Clique em Get MongoDB. Clique em Server e Escolha a versão <i>Current Release</i> na versão <i>MSI</i> de instalador.</li>
@@ -615,18 +608,16 @@ rmdir /S .git
                 <li>Clique em Complete.</li>
                 <li>Deixe as demais opções na seleção padrão.</li>
             </ul>
-        </t>
-        <t t="Baixando o MongoDB Compass">
+        <h5>Baixando o MongoDB Compass</h5>
             <p>O MongoDB Compass é o GUI para navegar nos documentos do MongoDB</p>
             <ul>
                 <li>Acesse <a target= "_blank" href="https://www.mongodb.com/">https://www.mongodb.com/</a> </li>
                 <li>Clique em Get MongoDB. Clique em Tools e Escolha a versão <i>Community Edition Stable</i></li>
                 <li>Após download, execute o instalador</li>
             </ul>
-        </t>
         <p>Na seção vista anteriormente sobre <a href="#bd">banco de dados</a> tem um exemplo de como instalar o utilizar o módulo NPM <code>mongodb</code>.</p>
     </t>
-    <t t="Express" id="mean-express">
+    <t t="Backend - Express" id="mean-express">
     <p>O módulo <code>http</code> vem na instalação padrão e permite aceitar requests e enviar responses através de uma porta. No entanto o <code>http</code> precisa de uma configuração para cada request e response a ser realizado, dando bastante trabalho até para botar uma página estática no ar. Para facilitar, rapidamente surgiram frameworks no <b>NPM</b> que visam facilitar todo o processo como: <code>Express, Socket.io, Loopback.io, Meteor.JS</code>, entre vários outros. Um dos modulos mais famosos para facilitar esse processo é o <code>express</code>.</p>
     <p>Crie um projeto (nova pasta e arquivo <code>package.json</code>).  Para criar um servidor web usando o módulo <code>http</code> precisariamos do script abaixo: </p>
     <code>server.js</code><br/>
@@ -679,9 +670,32 @@ console.log('Server running at http://127.0.0.1:8080/'); // Mostra uma mensagem 
     Server running at http://127.0.0.1:8080/
     Request for /index.htm received.
     </code></pre>
-    <p>O express também tem um ferramenta de desenvolvimento o <b>Express Generator</b>. Para instalar use:</p>
+    <p>O express também tem um ferramenta de desenvolvimento o <b>Express Generator</b>. Ele será uma ferramente útil para criação da API RESTFul. Para instalar use:</p>
     <pre><code class="shell">$ npm install -g express-generator</code></pre>
-    <p>Ele será uma ferramente útil para criação da API RESTFul.</p>
+    </t>
+    <t t="Frontend - Angular" id="angular">
+        <p>O Angular é um framework para utilizar como front-end em páginas SPA, que contém apenas 1 arquivo index.html de inicialização e é fortemente focado em javascript. Desde a versão 2, o Angular conta com a ferramenta de desenvolvimento <b>Angular CLI</b> disponível no NPM. O <b>Angular CLI</b> é responsável por criar um ambiente de desenvolvimento completo composto por: <a href="https://webpack.js.org/">Webpack</a>, <a href="https://www.protractortest.org/">Protactor</a>, <a href="https://karma-runner.github.io/">Karma</a>, <a href="https://jasmine.github.io/">Jasmine</a>, <a href="https://palantir.github.io/tslint/">TSLint</a>,<a href="https://www.typescriptlang.org/">Typescript</a> entre outros. Para baixar o Angular CLI:</p> 
+        <pre><code class="sheel">$ npm install -g @angular/cli</code></pre>
+        <p>Outra ferramenta complementar é o <a href="https://marketplace.visualstudio.com/items?itemName=nrwl.angular-console">Angular Console</a> que fornece uma interface gráfica ao Angular CLI para utilização no Visual Studio Code.<br/>
+        <img src="https://raw.githubusercontent.com/nrwl/angular-console/master/static/angular-console-plugin.gif" width="50%" height="50%"/></p>
+        <h5>Comando <code>ng</code></h5>
+        <p>O Comando <code>ng</code> é a ferramenta básica do Angular CLI. Ele mescla vários comandos de todas as ferramentas envolvidas (NPM, Webpack, jasmine, protractor, Karma, TSLint, TSC, etc). Ele permite criar os mais váriados componentes, realizar testes, otimizações e criar a versão de produção que será publicada. Para conhecer os comandos digite</p>
+        <pre><code class="shell">$ ng help</code></pre>
+        <p>Para inicial um novo projeto Angular na pasta atual digite:</p>
+        <pre><code class="shell">$ ng new analytics --directory . -v --force</code></pre>
+        <p>Por padrão o comando <code>ng new</code> criar um subdiretório com o nome do projeto. Utilizando a opção <code>--directory .</code> ele cria o projeto na pasta atual. A opção <code>-v</code> exibe mais informações durante o periodo de configurações. A opção <code>--force</code> é necessária pois haviamos criado os arquivos <code>package.json</code> e <code>.gitignore</code> para testar o nosso repositório anteriormente e ele precisa ser sobrescrito.</p>
+        <p>Após o comando várias perguntas serão feitas:</p>
+        <ul>
+        <li><b>Would you like to add Angular routing?</b>: O <b>Angular Route</b> é uma ferramenta que permite monitorar a URL e exibir um conteúdo diferente. Ele também manipula parâmetros para personalizar o conteúdo. Um exemplo pode ser visto em <a href="https://angular.io/generated/live-examples/router/stackblitz.html">https://angular.io/generated/live-examples/router/stackblitz.html</a>. Após carregar clique em <b>Open in new window</b> e navegue. Note que a barra de endereço sofre alterações que refletem o conteúdo.</li>
+        <li><b>Which stylesheet format would you like to use?</b>: Permite que você escolha se vai usar CSS puro ou uma ferramenta de pré-processamento de CSS como Sass/SCSS, Less ou Stylus. Segundo o site <a href="https://www.slant.co/topics/217/~best-css-preprocessors-postprocessors">Slant</a> o mais popular é o Sass.</li>        
+        </ul>
+        <p>Após as perguntas iniciais, o download das ferramentas e configurações deve demorar um tempo. Após o processo completar a pasta deve ficar com cerca de 250MB de arquivos. Lembrando que esse tamanho será por conta de todas as ferramentas de desenvolvimento, a versão de distribuição deve ficar bem pequena.</p>
+        <p>Para criar uma versão de produção do Angular use o comando</p>
+        <pre><code class="shell">$ ng dist --prod</code></pre>
+        <p>Isso criará um pasta chamada <code>dist/analytics</code> com todos os arquivos processados e minificados pronto para colocar no servidor. A aplicação demo do angular ocupa cerca de 380KB.</p>
+        <p>Acesse essa pasta e inicalize um projeto NPM com <code>npm init -y</code>, instale o express <code>npm install express</code>. Após isso utilize o código anterior <code>server.js</code> para criarmos um servidor com Express. Agora podemos iniciar o nosso servidor Node.Js utilizando MEAN:</p>
+        <pre><code class="shell">$ node server.js</code></pre>
+        <p>Agora sua página está em produção e acessível via <code>http://localhost:8080/</code> ou <code>http://x.x.x.x:8080/</code> onde x.x.x.x é o seu IP.</p>
     </t>
 </c>
 <!--
