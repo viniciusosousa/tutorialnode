@@ -1,0 +1,746 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="tutorial.xsl"?>
+<root t="Node.JS" st="Este é um tutorial para desenvolvimento de scripts em Node.JS" obs="Desenvolvido por Vinicius Oliveira (vinicius.osouza@telefonica.com)">
+<alert>
+    O tutorial assume que você tem noções básicas de Javascript. Caso contrário, faça os tutoriais voltado para esse introdução
+</alert>
+<c t="Conhecendo o Node.JS" id="conhecendo-ferramentas">
+    <t t="Introdução" id="intro">
+        <p>O Node.Js é um ambiente que permite executar scripts na linha de comando, utilizando como linguagem o Javascript, substituindo por exemplo VbScript e arquivos de lote do DOS.</p>
+        <p>Além da funcionalidade padrão do Javascript, o Node.js vem por acompanhado várias bibliotecas na instalação padrão, chamado de módulos, que adicionam várias funções e aumentam a sua capacidade, permitindo automatizar inumeras atividades de rede e interação com o sistema operacional. O Node.JS conta também com uma comunidade open source muito forte, disponibilizando inumeros pacotes extras que podem ser baixados através da ferramenta <code>NPM</code> que acompanha o Node.js na instalação padrão, fazendo com que as possibilidades com ele sejam cada vez mais interessantes.</p>
+        <p> Uma das características mais marcantes, é que quase todas as funções do Node.JS funcionam de forma assíncrona. Funções assíncronas reduzem muito a necessidade de processamento e permite manipular vários fluxos simultâneos. No entanto isso tem um preço: a lógica é um pouco mais complexa para o programador tradicional. O programador tem que mudar a maneira de pensar como o seu software será executado do padrão linear tradicional e prever essas execuções simultâneas e não sequencial dos seus programas.</p>
+    </t>
+    <t t="Javascript ES6" id="es6">
+        <p>Além da estrutura padrão da linguagem Javascript: Variáveis, Operadores, Controle de fluxo, Funções, etc. os scripts para Node.js se beneficiam da especificação ES6 do Javascript, também conhecida como ECMAScript 2015, que coloca o Javascript com recursos avançados como suporte completo a orientação de objetos (classes, construtores, set/get, herança, interface, etc), funções arrow, escopo de bloco para variáveis, vários recursos novos para facilitar a utilização de parâmetros de funções (valores padrão, parâmetros rest, etc) e a mais utilizada de todas: <b>export e require de funções, facilitando a criação e utilização de bibliotecas</b>. Além disso o Node.js tem módulos que transformam outras linguagens semelhantes em Javascript, sendo as mais famosas o <b>CoffeScript</b>, <b>Dart</b> e <b>TypeScript</b></p>
+        <p>Para tornar o Javacript "executável" no sistema operacional, o Node.JS compila em tempo real em linguagem de máquina utilizando o tão aclamado <code>V8</code> desenvolvido no projeto Chromium e faz parte do Google Chrome. Isso permite uma velocidade de processamento muito maior que linguagens interpretadas.</p>
+    </t>
+    <t t="Módulos" id="modulos">
+    <p>O ES6 permite que você divida o seu código em vários arquivos permitindo uma melhor organização. Para ilustrar vamos criar um módulo que tem uma função que exibe a data atual do sistema. Por padrão a visibilidade de funções e métodos só é possível dentro de um mesmo arquivo Javascript. A palavra chave <code>exports</code> torna pública propriedades e métodos para outros arquivos :</p>
+    <p><code>meumodulo.js</code><br/>
+    <pre><code class="javascript">exports.atual = function () {
+    return Date();
+}; </code></pre></p>
+    <h5>Usando módulos</h5>
+    <p>Agora com a função <code>require()</code> podemos utilizar o módulo. Módulos que não são padrões ou não são baixados via NPM precisam ter o caminho especificado, note que usamos <code>./</code> para identificar o caminho do módulo, indicando que o módulo está na mesma pasta do script sendo executado pelo Node.js. Para todos os módulos o padrão é o nome do arquivo sem a extensão <code>.js</code>:</p>
+    <p><code>main.js</code><br/>    
+    <pre><code class="javascript">const data = require('./meumodulo'); /* Modulo criado anteriormente */
+console.log(data.atual);</code></pre></p>
+    <alert>Por convenção, os módulos são sempre carregados em constantes. Isso é um pouco estranho no início, pois a maioria das linguagens não costumam receber objetos em constantes. No entanto no padrão Javascript constantes para objetos apenas "travam" o endereço da memória do objeto, mas suas propriedades podem continuar a ser alteradas. Assim um erro é gerado apenas se tentarmos inserir outro objeto na constante. Essa forma de inicializar módulos se tornou um padrão no mundo Node.JS.</alert>
+    <h5>Módulos padrões do Node.JS</h5>    
+        <p>Conforme falado anteriormente além do Javascript padrão, a capacidade do Node.Js pode ser expandida através de módulos. A instalação padrão do Node vem com uma série de módulos que disponibilizam várias funcionalidades. Segue abaixo alguns modulos bastante utilizados:
+            <table class="table table-sm">
+                <tr><td>fs</td><td>Para manipular arquivos</td></tr>
+                <tr><td>zlib</td><td>Para compactar ou descompactar arquivos</td></tr>
+                <tr><td>os</td><td>Para ver informações do sistema</td></tr>
+                <tr><td>path</td><td>Para manipular caminhos(path)</td></tr>
+                <tr><td>net</td><td>Para criar clientes e servidores</td></tr>            
+                <tr><td>http</td><td>Parar criar um servidor HTTP permitindo que ele aceite <i>request</i> e <i>responses</i>.</td></tr>
+                <tr><td>dns</td><td>Permite executar DNS lookups.</td></tr>
+                <tr><td>events</td><td>Para criar eventos personalizados</td></tr>
+            </table>
+        </p>
+    </t>
+    <p>Caso precise usar um módulo padrão ou instalado pelo NPM, não é necessário especificar um caminho, pois o Node automaticamente procura o módulo em alguns caminhos padrões:</p>
+    <pre><code class="javascript">const fs = require('fs'); /* Modulo padrao para gestao de arquivos do Node.js */</code></pre>
+    <t t="Usando o Node.JS" id="uso">
+        <p>O Node.JS pode ser usado de duas formas: através de um script previamente escrito ou como um terminal (ou prompt de comando) que aguarda um comando com execução imediata.</p>
+        <h5>Script</h5>
+        <p>A forma mais comum é criar um script e utilizar o commando <code>node</code> para executá-lo. 
+        <pre><code class="shell">$ node main.js</code></pre></p>
+        <h5>Terminal</h5>
+         <p>Você pode iniciar um terminal do node digitando no prompt o comando <code>node</code> ou no menu inicial abra o <b>Node.Js command prompt</b>. Você verá o <i>prompt</i> <code>&gt;</code> indicando que o Node está aguardando um comando para executar. Isso é útil para fazer algumas operações rápidas. Alguns exemplos:
+        <pre><code class="javascript">$ node
+&gt; Date();   /* Recupera a Data atual do Sistema */
+'Sun Apr 21 2019 11:28:04 GMT-0300 (GMT-03:00)'
+&gt; os.platform(); /* Recupera a plataforma do sistema operacional */
+'win32'
+&gt; os.cpus(); /* Recupera informações sobre o processador */
+[ { model: 'Intel(R) Core(TM) i5-7300U CPU @ 2.60GHz',
+    speed: 2712,
+    times:
+     { user: 250078, nice: 0, sys: 206000, idle: 4065281, irq: 22078 } },
+  { model: 'Intel(R) Core(TM) i5-7300U CPU @ 2.60GHz',
+    speed: 2712,
+    times:
+     { user: 228000, nice: 0, sys: 183265, idle: 4109796, irq: 25093 } },
+  { model: 'Intel(R) Core(TM) i5-7300U CPU @ 2.60GHz',
+    speed: 2712,
+    times:
+     { user: 261296, nice: 0, sys: 170906, idle: 4088859, irq: 781 } },
+  { model: 'Intel(R) Core(TM) i5-7300U CPU @ 2.60GHz',
+    speed: 2712,
+    times:
+     { user: 230187, nice: 0, sys: 156703, idle: 4134171, irq: 812 } } ]
+&gt;</code></pre>
+        </p>
+        <p>Para parar o prompt aperte <kbd>ctrl+c</kbd> duas vezes ou <kbd>ctrl+d</kbd>.</p>
+        <p>No modo terminal os módulos instalados globalmente não precisam utilizar a função <code>require()</code> para serem utilizados, como foi o caso do módulo <code>os</code> acima.</p>
+    </t>
+</c>
+<c t="NPM" id="npm">
+    <p>O NPM é a ferramenta que acompanha o Node.js que permite facilitar o download dos módulos do repositório <a href="http://www.npmjs.com" target="_blank">http://www.npmjs.com</a> que contém milhares de módulos opensource para utilização com o Node.Js.</p>
+    <t t="Atualizando o NPM" id="atualizando-npm">
+        <p>Para utilizar os últimos recursos do NPM, verifique sempre se está utilizando a última versão: </p>
+        <pre><code class="shell">$ npm install -g npm
+$ npm --version</code></pre>
+    </t>
+    <t t="Projetos NPM" id="projetos-npm">
+        <p>Criar um projeto é simplesmente criar uma pasta vazia no computador e adicionar um arquivo chamado <code>package.json</code>, que terá informações básicas do seu projeto como nome, versão, descrição e outros dados.</p>
+        <p>O arquivo <code>package.json</code> é um arquivo de texto simples estruturado no padrão <b>JSON</b>. Para evitar criar do zero o arquivo, você pode utilizar o comando <code>npm init</code> que fará uma série de perguntas sobre o projeto que está sendo criado e no final o arquivo será criado na pasta atual (atenção para ter criado uma pasta vazia antes, no exemplo abaixo criamos a pasta <code>C:\teste</code>):</p>
+        <pre><code class="shell">$ npm init
+This utility will walk you through creating a package.json file.
+It only covers the most common items, and tries to guess sensible defaults.
+
+See `npm help json` for definitive documentation on these fields
+and exactly what they do.
+
+Use `npm install &lt;pkg&gt;` afterwards to install a package and
+save it as a dependency in the package.json file.
+
+Press ^C at any time to quit.
+package name: (teste) teste
+version: (1.0.0)
+description:
+entry point: (index.js)
+test command:
+git repository:
+keywords:
+author:
+license: (ISC)
+About to write to C:\teste\package.json:
+
+{
+  "name": "teste",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" &amp;&amp; exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
+
+Is this OK? (yes)</code></pre>
+    <p>Dependendo das suas respostas o arquivo <code>package.json</code> será criado:</p>
+       <pre><code class="javascript">{
+  "name": "teste",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" &amp;&amp; exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}</code></pre>
+    <p>Esses são os atributos mais comuns no <code>package.json</code> e são auto explicativos: name, version, description, author, license</p>
+    <p>Alguns outros atributos não menos obvios como: <code>main</code> e <code>scripts</code>: </p>
+    <ul>
+        <li><b>main</b>: É o ponto de entrada do módulo, normalmente <code>index.js</code></li>
+        <li><b>scripts</b>: são atalhos que podem ser executados na linha de comando os mais comuns são <code>test</code>, <code>build</code>, <code>server</code>. Esses atalhos podem ser chamados na linha de comando com o comando <code>npm</code> que lerá o arquivo <code>package.json</code> e executará o comando definido:
+        <pre><code class="shell">$ npm test
+$ npm build
+$ npm server
+.
+.
+.</code></pre></li>
+    </ul>
+     <p>No <code>package.json</code> anterior de exemplo, o <code>npm test</code> apenas exibirá uma mensagem de erro, mas pode contér uma linha de comando para executar testes unitários por exemplo.</p>
+    </t>
+    <t t="Repositório NPM" id="repositorio-npm" >
+    <p>Utilizar módulos NPM permitem que aproveite todo o potencial já desenvolvido por uma comunidade de programadores no mundo. Para quase tudo que você precisar programar existe um módulo no NPM.</p>
+    <p>O arquivo <code>package.json</code> também armazena informações de qualquer módulo instalado com o comando <code>npm install <i>nomedomodulo</i></code> na propriedade <b>dependencies</b>. Com base nessas informações, você pode atualizar facilmente ver se existe algum modulo desatualizado com <code>npm outdated</code> e se necessário atualizar com o comando <code>npm update</code>.</p>
+    <p>Outra facilidade é que caso queira distribuir o seu projeto, você não precisa enviar os módulos do NPM junto, pois com base no arquivo <code>package.json</code> basta o outro programador digitar o comando <code>npm install</code>, sem nenhum nome de módulo mesmo, que todos as dependências que estão no <code>package.json</code> serão instaladas.</p>
+
+    <p>O comando <code>npm install</code> permite instalar um modulo de 4 maneiras:</p>
+    <ul>
+        <li><b>Como dependência em um projeto:</b> Instala na pasta atual e adiciona como uma dependência do projeto. Se o seu código fonte for distribuido, outros programadores poderão executar <code>npm install</code> e todas as dependências serão instaladas automaticamente. Todos os módulos instalados como dependência ficam na pasta <code>node_modules</code> dentro da pasta do seu projeto.
+        <pre><code class="shell">$ npm install <i>nome_modulo</i></code></pre></li>
+        <alert>
+            Antes do NPM 5, as depencias não eram adicionadas por padrão e era necessário adicionar a opção <code>--save</code>. A partir dessa versão, a instalação de módulos como dependência se tornou padrão, então a opção <code>--save</code> não é mais necessária. Caso não deseje adicionar como dependência é necessário utilizar a opção <code>--no-save</code> (normalmente quando você vai testar um módulo, mas não tem certeza se ele vai ficar em definitivo no seu código).
+        </alert>        
+        <li><b>Opcional:</b> Você pode instalar um modulo na pasta do projeto como ferramenta opcional. Caso por algum motivo o modulo não seja instalado com o <code>npm install</code> ele não gerará erro.
+        <pre><code class="shell">$ npm install <b>--save-optional</b> <i>nome_modulo</i></code></pre></li>
+        <li><b>Globalmente:</b> Instala os módulos na pasta global. O uso mais comum são com ferramentas de desenvolvimento que servem vários projetos como o Angular CLI, Create-React, etc. O ideal é instalar assim somente módulos que sejam utilizados para auxiliar no desenvolvimento, mas que não cria dependência no código fonte.
+        <pre><code class="shell">$ npm install <b>-g</b> <i>nome_modulo</i></code></pre></li>
+        <li><b>Desenvolvimento:</b> Você pode instalar um modulo na pasta do projeto como ferramenta de desenvolvimento. A vantagem dessa opção é que caso o seu código seja distribuido, outros programadores automaticamente terão os módulos instalados no seu ambiente de desenvolvimento ao executar <code>npm install</code>. Normalmente são instalados assim, ferramentas que o código fonte dependam para funcionar, ex: Babel, Typescript, Less etc.
+        <pre><code class="shell">$ npm install <b>--save-dev</b> <i>nome_modulo</i></code></pre></li>
+    </ul>
+    </t>
+    <t t="Outros comandos NPM" id="outros-comnados-npm">
+    <p>Para exibir todos os módulos instalados utilize:</p>
+    <pre><code class="shell">$ npm list -g --depth=0</code></pre>
+    <p>A opção <code>depth=0</code> evita que a lista inclua todas as depêndencias e sub-dependencias. Você pode aumentar o número para ir detalhando mais. Se retirar a opção <code>-g</code>, somente os módulos locais serão exibidos, se houver.</p>
+    <p>Para desinstalar um módulo use (adicionar conforme a necessidade o modificador <code>-g</code>):</p>
+    <pre><code class="shell">$ npm uninstall <i>nome_modulo</i></code></pre>
+    <p>Para pesquisar se um módulo está instalado use (adicionar conforme a necessidade o modificador <code>-g</code>):</p>
+    <pre><code class="shell">$ npm search <i>nome_modulo</i></code></pre>
+    <p>É possível criar também o seu módulo no repositório NPM. Basta fazer um cadastro no site <a href="www.npmjs.com">www.npmjs.com</a> e executar os comandos</p>
+    <pre><code class="shell">$ npm adduser
+Username: <i>nomedousuario</i>
+Password:
+Email: (this IS public) <i>email@dousuario</i>
+    </code></pre>
+<p>Para publicar no seu repositório use:</p>
+<pre><code class="shell">$ npm publish</code></pre>
+</t>
+</c>
+<c t="Funções assíncronas e síncronas" id="assincrona">
+        <p>Por padrão a maioria das funções do Node.JS funcionam sem parar o fluxo de execução conhecido como execução assíncrona. A vantagem desse tipo de  função é que ela não bloquia a execução do códi\go até concluir um processamento, assim outras partes do código podem continuar a ser executadas.</p>
+        <p>Imagine se o seu programa precisa conectar a um banco de dados remoto, como envolve rede o processo pode ser imediato ou demorar alguns segundos. Em outra linguagem como o PHP, o código seria interrompido até a conexão ser feita. No Node.js a execução continua e várias ações podem ser tomadas como fornecer um feedback ao usuário que a conexão está sendo realizada, adiantar outras partes que não dependem da conexão com o banco, etc. Assi que a conexão conclui, um sinal é disparado e o fluxo do programa é conduzido uma função conhecida como <i>callback</i> que será executada. A função de <i>callback</i> é sempre o último último argumento em uma função assíncrona. A quantidade argumentos passada para função de <i>callback</i> varia conforme o caso mas o primeiro sempre será reservado para o objeto de exceção caso ocorra falha, se a operação for completada com sucesso esse argumento será <code>null</code> or <code>undefined</code>.</p>
+        <p>Normalmente existe também uma versão que trabalha de maneira síncrona, que bloquia a execução do código até completar. Por convenção normalmente a versão síncrona é o nome do método com o sufixo <code><b>sync</b></code>. Para métodos síncronos é recomendado sempre que eles estejam dentro de um bloco <code>try/catch</code>.</p>
+        <p>Do ponto de vista do programador é mais simples utilizar as versões síncronas pois ela executará sequencialmente o código, mas do ponto de vista de desempenho, utilizar as versões assíncronas são mais eficientes, principalmente quando envolvem operações de rede ou leitura de arquivos pesados. Abaixo um exemplo simples dos dois jeitos:</p>
+        <p><code>main.js</code>
+        <pre><code class="javascript">const fs = require('fs');
+
+    // Leitura assíncrona
+    fs.readFile('input.txt', function (err, data) {
+        if (err) return console.error(err);
+        console.log("Leitura assíncrona: " + data.toString());
+    });
+
+    // Leitura síncrona
+    try {
+        var data = fs.readFileSync('input.txt');
+        console.log("Leitura síncrona: " + data.toString());
+        console.log("Fim");
+    } catch (err) {
+        console.error(err);
+    }
+    </code></pre></p>
+        <p>O Objeto que o módulo <b>fs</b> retorna tem vários métodos, entre eles <code>readFile</code> e <code>readFileSync</code>. O primeiro faz a leitura assíncrona de um arquivo e o segundo a leitura síncrona.</p>    
+        <p>Crie agora o arquivo de texto em qualquer editor chamado <code>input.txt</code> com um texto qualquer:
+        <pre><code class="plaintext">Esse é um arquivo de teste para testar o módulo fs</code></pre>
+        </p>
+        <p>Agora execute o script:
+        <pre><code class="shell">$ node main.js
+Leitura síncrona: Esse é um arquivo de teste para testar o módulo fs
+Fim
+Leitura assíncrona: Esse é um arquivo de teste para testar o módulo fs</code></pre>
+        Note que como a primeira parte foi assíncrona a execução continuou, ou seja, não aguardou a conclusão da leitura do arquivo antes de executar a segunda leitura que seria síncrona. Assim que o arquivo acabou de ser lido, a função de <i>callback</i> foi disparada e o conteudo foi exibido. Assim a leitura <b>síncrona</b> foi exibida antes da <b>assíncrona</b>, apesar de no script estar o inverso, a assíncrona antes da síncrona.</p>
+
+</c>
+<c t="Trabalhando com banco de dados" id="bd">
+    <p>Utilizando o NPM é possível instalar módulos que permitem acessar vários bancos de dados do mercado. Existem varias versões para isso, vamos instalar o suporte para o <b>Mysql</b>, <b>Oracle</b> e MongoDB usando módulos populares via <b>NPM</b>:</p>
+    <pre><code class="shell">$ npm install mysql oracledb mongodb</code></pre>
+    <p>Agora vamos criar um código que fará a conexão ao banco e executar um SQL (destacado em itálico)</p>
+    <code>main.js</code>
+    <pre><code class="javascript">// MYSQL
+    const mysql = require('mysql');
+    const conMysql = mysql.createConnection({
+                                            host: "host",  /*exemplo:dspber3166071*/
+                                            user: "digiteusuario",
+                                            password: "digiteasenha"
+                                            });
+    
+    conMysql.connect(function(err) { /* Função assíncrona */
+                    if (err) throw err;
+                    console.log("Conectado ao MySQL");
+                    <b><i>
+                    conMysql.query('SELECT 1', function (err, result){ /* Função assíncrona */
+                        if (err) throw err;
+                        console.log(result);
+                    });
+                    </i></b>
+                 });
+ 
+    //ORACLE
+    const oracle = require('oracledb');
+    // DPGC está incluido no tnsnames no local de instalação do oracle
+    oracle.getConnection({
+                        connectString : "Nome no TSNAMES",   /*exemplo:DPGC.REDECORP.BR*/
+                        user: "digiteusuario",
+                        password: "digiteasenha"
+                        }, function(err, con) { /* Função assíncrona */
+                            if (err) throw err;
+                            console.log("Conectado ao Oracle");
+                            <b><i>con.execute('SELECT 1 FROM DUAL', function (err, result){ /* Função assíncrona */
+                                console.log(result);
+                            });
+                            </i></b>
+                        });
+
+    //MONGODB                        
+    const MongoClient = require('mongodb').MongoClient;
+    const assert = require('assert');
+    
+    // Connection URL
+    const url = 'mongodb://localhost:27017';
+    
+    // Database Name
+    const dbName = 'myproject';
+    
+    // Use connect method to connect to the server
+    MongoClient.connect(url, function(err, client) {
+        assert.equal(null, err);
+        console.log("Connected successfully to server");
+    
+        const db = client.db(dbName);
+        const findDocuments = function(db, callback) {
+            // Get the documents collection
+            const collection = db.collection('documents');
+            // Find some documents
+            collection.find({}).toArray(function(err, docs) {
+                assert.equal(err, null);
+                console.log("Found the following records");
+                console.log(docs)
+                callback(docs);
+        });
+        } 
+    });</code></pre>
+    <p>Salve o arquivo como <code>main.js</code> e execute:</p>
+    <pre><code class="shell">$ node main.js</code></pre>
+</c>
+<c t="Manipulando aplicativos do windows via COM ou ActiveX" id="com">
+<p> Com o módulo <code>win32ole</code> do NPM os Objetos COM e ActiveX são expostos ao ambiente do Node.Js. Isso permite ter acesso ao modelo de objeto de várias aplicações do Windows como Excel, Access e tudo mais que for compativel a interface COM ou ActiveX.</p>
+<p>Para usar esse módulo é necessário que os módulos <code>windows-build-tools</code> e <code>node-gyp</code> estejam instalados. O pacote <code>windows-build-tools</code> precisa de perfil de Administrador no Power Shell para conseguir instalar.</p>
+<pre><code class="shell">$ npm install -g --production windows-build-tools</code></pre>
+<alert> O <code>node-gyp</code> não funciona com o Python 3.x, então caso esteja pré-instalado será necessário desinstalar para que o <code>windows-build-tools</code> instale corretamente o Python 2.7.x. Caso não deseje desinstalar, siga as orientações disponíveis no <a href="https://github.com/nodejs/node-gyp#configuring-python-dependency" target="_blank">README do node-gyp</a>.</alert>
+<p>A instação desse pacote pode demorar algum tempo. Abaixo uma animação demonstrando o processo (exibido de forma acelerada):</p>
+<img src="https://user-images.githubusercontent.com/1426799/45007904-bde9f280-afb4-11e8-8a35-c77dffaffa2a.gif"/>
+<p>Depois pode instalar o <code>node-gyp</code></p>
+<pre><code class="shell">$npm install -g node-gyp</code></pre>
+<p>Após esses pré-requisitos podemos instalar o <code>win32ole</code></p>
+<pre><code class="shell">$npm install win32ole</code></pre>
+<p>Abaixo um exemplo de utilização desse módulo</p>
+<pre><code class="javascript">try{
+  var win32ole = require('win32ole');
+  // var xl = new ActiveXObject('Excel.Application'); // You may write it as:
+  var xl = win32ole.client.Dispatch('Excel.Application');
+  xl.Visible = true;
+  var book = xl.Workbooks.Add();
+  var sheet = book.Worksheets(1);
+  try{
+    sheet.Name = 'sheetnameA utf8';
+    sheet.Cells(1, 2).Value = 'test utf8';
+    var rg = sheet.Range(sheet.Cells(2, 2), sheet.Cells(4, 4));
+    rg.RowHeight = 5.18;
+    rg.ColumnWidth = 0.58;
+    rg.Interior.ColorIndex = 6; // Yellow
+    var result = book.SaveAs('testfileutf8.xls');
+    console.log(result);
+  }catch(e){
+    console.log('(exception cached)\n' + e);
+  }
+  xl.ScreenUpdating = true;
+  xl.Workbooks.Close();
+  xl.Quit();
+}catch(e){
+  console.log('*** exception cached ***\n' + e);
+}</code></pre>
+</c>
+<c t="Trabalhando com o sistemas de arquivos - fs" id="fs">
+    <t t="Introdução" id="intro-fs">
+        <p>O módulo <code>fs</code> é padrão na instalação do Node.JS e permite manipular o sistemas de arquivos, criando, lendo, atualizando, apagando e renomeando pastas ou arquivos no computador local.</p>
+        <p>Ao manipular arquivos alguns conceitos são importantes:</p>
+        <ul>
+        <li><b>File descriptors (fd)</b>: Cada arquivo aberto tem um identificador numérico chamado <i>File Descriptor</i>. O Método <code>fs.open()</code> é reponsável por atribuir um <b>fd</b> a um arquivo. A maioria dos sistemas operacionais tem um limite de atribuição de <b>fd</b> ao mesmo tempo, logo um ponto chave é fechar todos que já finalizaram suas operações, evitando falhas de memória e travamento.</li>
+        <li><b>String</b>: É uma sequencia de texto.</li>
+        <li><b>Buffer</b>: É uma sequencia de dados binários (conhecido como <i>binary stream</i>). É util para carregar dados binários em vez de uma sequencia de texto em um arquivo.</li>
+        <li><code>fs.constants</code>: É um objeto com várias constantes comumente usadas pelo módulo <b>fs</b>: <a href="https://nodejs.org/api/fs.html#fs_fs_constants_1" target="_blank">FS Constants</a></li>
+        </ul>
+    </t>
+    <t t="Métodos Comuns" id="metodos-fs">
+    <p>Abaixo exemplo de alguns métodos comumente usados:</p>
+        <table class="table table-sm">
+            <tr><th colspan="2">Criação e escrevendo em arquivos</th></tr>
+
+            <tr><td><code>fs.open(path[, flags[, mode]], callback)
+            <br/><br/>fs.close(fd, callback)</code></td>
+            <td>- <code>fs.open()</code> abre um arquivo e <code>fs.close()</code> fecha um arquivo. Caso ele não exista, ele cria um arquivo em branco.
+            <br/>- O <i>callback</i> exige dois argumentos: <code>err, fd</code>.
+            <br/>- A versão síncronas dessas funções são <code>fd.openSync</code> e <code>fd.closeSync</code>.
+            <br/>- Os <code>flags</code> mais comuns são: 'a' (append), 'r' (read), 'w' (write), 'r+' (read/write), 'a+' (read/append).
+            <br/>- O parametro opcional <code>mode</code> é usando quando um novo arquivo será criado, para definir as permissões do arquivo no padrão Linux (padrão chmod ex: 0x666), no Windows somente a permissão de escrita é possível.</td></tr>
+            <tr><td colspan="2">
+            <pre><code class="javascript">const fs = require('fs');
+fs.open('teste.txt', 'w', (err, fd) => {
+  if (err) throw err;
+  console.log('Arquivo teste.txt criado!');
+   fs.close(fd, (err) => {
+      if (err) throw err;
+    });
+});</code></pre></td></tr>
+
+            <tr><td><code>fs.appendFile(path, data[, options], callback)</code></td>
+            <td>- Adiciona um conteudo (string ou buffer) ao final de um arquivo. Se o arquivo não existe ele será criado
+            <br/>- Se <i>options</i> for uma string ele especifica a codificação (ex: 'utf8').
+            <br/>- Se <i>options</i> for um objeto será com as seguintes propriedades(estão com os valores padrões): <code>{encoding: 'utf8', mode: '0x666', flag: 'a'}</code>
+            <br/>- A versão síncrona dessa função é <code>fd.appendFileSync</code>.
+            </td></tr>
+            <tr><td colspan="2">
+            <pre><code class="javascript">const fs = require('fs');
+fs.appendFile('teste.txt', 'Novo texto', 'utf8', (err) => {
+    if (err) throw err;
+    console.log('Texto adicionado a teste.txt com sucesso!');
+});</code></pre></td></tr>
+
+            <tr><td><code>fs.writeFile(file, data[, options], callback)</code></td>
+            <td>- Substitui todo o conteudo (string ou buffer) de um arquivo. Se o arquivo não existe ele será criado
+            <br/>- Se <i>options</i> for uma string ele especifica a codificação (ex: 'utf8').
+            <br/>- Se <i>options</i> for um objeto será com as seguintes propriedades(estão com os valores padrões): <code>{encoding: 'utf8', mode: '0x666', flag: 'w'}</code>
+            <br/>- A versão síncrona dessa função é <code>fd.writeFileSync</code>.
+            </td></tr>
+            <tr><td colspan="2">
+            <pre><code class="javascript">const fs = require('fs');
+fs.writeFile('teste.txt', 'Texto Substituido', 'utf8', (err) => {
+    if (err) throw err;
+    console.log('Texto do arquivo teste.txt substituido com sucesso!');
+});</code></pre></td></tr>
+
+            <tr><td><code>fs.write(fd, string[, position[, encoding]], callback)<br/><br/>
+            fs.write(fd, buffer[, offset[, length[, position]]], callback)</code></td>
+            <td>Escreve uma string ou um buffer para um arquivo aberto com <code>fs.open()</code> e identificado por um objeto<b>fd</b>.
+            <br/>- <i>position</i> indica a partir de qual caractere o texto deve ser substituido.
+            <br/>- Se o conteudo for um <i>buffer</i> é possível especificar qual o índice inicial e final que será sobrescrito.
+            <br/>- A versão síncrona dessa função é <code>fd.writeSync</code>.
+            <br/>- O parametro <i>written</i> do callback refere-se ao tamanho em bytes da nova string/buffer substituida. Caso utilize um buffer somente o parametro <code>err</code> é disponibilizado no callback.
+            </td></tr>
+            <tr><td colspan="2">
+            <pre><code class="javascript">const fs = require('fs');
+fs.write('teste.txt', 'Alterado   ', 7, 'utf8', (err, written, string) => {
+    if (err) throw err;
+    console.log('Texto modificado para ${string} no arquivo teste.txt!');
+});</code></pre></td></tr>
+            </table>
+        </t>
+</c>
+<c t="Trabalhando com Eventos" id="eventos">
+<p>Em um ambiente orientado a eventos, a aplicação fica em um loop contínuo aguardando que algum evento ocorra. Assim que um evento é detectado, ele dispara uma função de callback. Todos os objetos que emitem eventos são instâncias do <code>events.EventEmitter</code>.</p>
+<t t="Streams" id="stream">
+<p>Um dos objetos que emitem eventos são os <code>streams</code>. Um <code>Stream</code> é um objeto que lê ou escreve dados para um destino de uma forma contínua. Existem várias fontes de <code>streams</code> no Node.js como: arquivos, stdout, stdin, arquivos zlib, crypto, sockets TCP, responses HTTP, requests HTTP e stderr.</p>
+<p> Existem quatro tipos de objetos <code>stream</code>:
+<ul>
+    <li><b>readable</b>: Stream usado para operação de leitura.</li>
+    <li><b>writable</b>: Stream usado para operação de escrita.</li>
+    <li><b>duplex</b>: Stream usado para operação de leitura e escrita.</li>
+    <li><b>transform</b>: Um tipo de duplex onde um stream <code>writable</code> pode ser alimentado por um stream <code>readable</code>.</li>
+</ul></p>
+<p>Quando um stream está fazendo uma operação de leitura ou escrita, são disparados eventos informando um status que o programa pode monitorar para realizar alguma atividade. Para definir uma atividade a ser realizada quando o evento acontece, utilizamos o método <code>on(<i>nome_evento, callback</i>)</code> que todos os objetos que derivam de <code>EventEmitter</code> contém.</p>
+</t>
+<t  t="Readable stream" id="readable-stream">
+ <p>O método <code>fs.createReadStream()</code> cria um <b>readable stream</b> ao ler um arquivo e durante essa operação vários eventos são disparados. O exemplo abaixo pode ler o conteúdo do <code>input.txt</code> e exibir no <i>stdout</i></p>
+<pre><code class="javascript">const fs = require("fs");
+var data = '';
+
+// Cria um readable stream
+var readerStream = fs.createReadStream('input.txt');
+readerStream.setEncoding('UTF8');
+
+// Manipula o evento data que é disparado quando as informações estão prontas para serem lidas
+readerStream.on('data', (chunk) => {
+   data += chunk;
+});
+
+// Manipula o evento end que é disparado quando não existe mais nada para ser lido
+readerStream.on('end', () => {
+   console.log(data);
+});
+
+// Manipula o evento error que é disparado quando ocorre algum erro lendo a informação
+readerStream.on('error', (err) => {
+   console.log(err.stack);
+});
+
+console.log("Fim");</code></pre>
+</t>
+<t t="Writable Stream" id="writeable-stream">
+<p>O exemplo abaixo utiliza o método <code>fs.createWriteStream</code> par criar um <b>writable stream</b> para salvar um texto em um arquivo</p>
+<pre><code class="javascript">const fs = require("fs");
+var data = 'Texto de teste';
+
+// Cria um writable stream
+var writerStream = fs.createWriteStream('output.txt');
+writerStream.write(data,'UTF8');
+writerStream.end();
+
+//  Manipula o evento finish que é disparado quando toda a informação esta no arquivo
+writerStream.on('finish', function() {
+   console.log("Write completed.");
+});
+
+// Manipula o evento error que é disparado quando ocorre algum erro escrevendo a informação
+writerStream.on('error', function(err) {
+   console.log(err.stack);
+});
+
+console.log("Fim");</code></pre>
+</t>
+<t t="Piping e zlib" id="piping">
+<p>Podemos utilizar o recurso de <b>piping</b> para que um stream alimente outro através do método <code>pipe()</code>. Por exemplo, podemos compactar um stream:</p>
+<pre><code class="javascript">const fs = require("fs");
+const zlib = require('zlib');
+
+// Cria um readable stream do arquivo input.txt e insere em um writable stream no arquivo compactado input.txt.gz
+fs.createReadStream('input.txt')
+   .pipe(zlib.createGzip())
+   .pipe(fs.createWriteStream('input.txt.gz'));
+  
+console.log("Arquivo input.txt compactado.");</code></pre>
+<p>Podemos descompactar também:</p>
+<pre><code class="javascript">const fs = require("fs");
+const zlib = require('zlib');
+
+// Cria um readable stream do arquivo input.txt e insere em um writable stream no arquivo compactado input.txt.gz
+fs.createReadStream('input.txt.gz')
+   .pipe(zlib.createGunzip())
+   .pipe(fs.createWriteStream('input.txt'));
+  
+console.log("Arquivo input.txt.gz descompactado.");</code></pre>
+</t>
+</c>
+<c t="Desenvolvimento Web" id="desenvolvimento-web">
+<p>Caso não tenha experiência com desenvolvimento web é importante conhecer como funciona a comunicação HTTP. Quando alguem usa um navegador (Firefox, Chrome, Edge, internet Explorer) ao digitar um endereço, o navagador envia por trás das cortinas <b>requests</b> HTTP, que são solicitações internacionalmente padronizadas de solicitar algo a um servidor web. Assim que o servidor web recebe o request, ele executa alguns processamentos e retorna <b>responses</b> que normalmente contém as páginas html, arquivos javascript, arquivos css, imagens e muitos outros tipos de arquivos para os navegadores, que processam e exibem a página formatada.</p>
+<p>A maior parte dos servidores web como por exemplo o servidor Apache HTTPD, recebem os <b>requests</b> e tem extensões que funcionam no servidor, como o PHP, que fazem consultas em banco de dados e executam lógicas complexas, modificando dinamicamente as paginas HTML, antes de enviar os <b>responses</b>.</p>
+<p>Uma das utilizações mais aclamadas do Node.js é sua capacidade como um servidor web. Assim é possível escrever scripts que ficam monitorando <b>requests</b> e podemos colocar toda a logica no servidor em Javascript para consultar um banco de dados, modificar um arquivo e devolver um <b>response</b>, que vai conter da mesma forma que os demais servidores, os documentos web: páginas html, arquivos javascript, arquivos css, imagens e muitos outros tipos de arquivos. A grande vantagem do Node.js é sua capacidade de se programar no servidor utilizando os benefícios das funções assíncronas, callback e suporte a eventos que torna o processamento muito mais leve.</p> 
+<p> A infraestrutura do Node.js permite criar uma ambiente de desenvolvimento conhecido como <b>fullstack</b> onde todo o processo de codificação tanto no backend (o que o servidor processa) quando de front-end (o que o usuário vê) pode ser realizado. Uma estrutura conhecida como <b>MEAN</b> é bem popular no mundo do Node.js que é composta pelo conjunto de ferramentas abaixo: </p>
+<ul>
+<li><b>M</b>ongoDb: Banco de dados NoSQL que utiliza primordialmente o formato <b>JSON</b> para armazenar dados, que é facilmente manipulável no Javascript.</li>
+<li><b>E</b>xpress: Módulo NPM que permite manipular requests e responses facilmente no Node.Js. Nesse conjunto, o Express entrega o index.php, os arquivos javascript necessários para carregar no navegador e depois passa a atuar fazendo operações RESTful com o banco de dados</li>
+<li><b>A</b>ngular: Um framework de front-end utilizando Javascript para criar uma infraestrutura no navegador de Single Page Application, onde apenas uma página é responsável por toda a navegação no site.</li>
+<li><b>N</b>ode.JS: O Node que unifica as peças e faz as coisas funcionarem no sistema operacional.</li>
+</ul>
+<alert>Outra opção é utilizar a estrutura <b>MERN</b> que substitui o <b>Angular</b> pelo <b>React</b> para fazer a operação no front-end.</alert>
+<p>Outras ferramentas são necessárias para o desenvolvimento:</p>
+    <t t="IDE - Visual Studio Code (VSCode)" id="vscode">
+        <p>O Visual studio code é um programa que pemite você editar e organizar seus programas em diversas linguagens de programação. Tem várias extensões que permitem facilitar o trabalho de desenvolvimento.</p>
+        <t t="Baixando o Visual Studio Code">
+        <ul>
+            <li>Acesse <a target= "_blank" href="https://code.visualstudio.com/">https://code.visualsultudio.com/</a> </li>
+            <li>Clique em downloads. Clique em Download for Windows. Após download, execute o instalador</li> 
+            <li>Na parte que define o caminho de instalação modifique para <code>C:\vscode</code> devido a política de instalação de programas da Vivo.</li>
+            <li>Deixe as demais opções na seleção padrão.</li>
+        </ul>
+        </t>
+    </t>
+    <t t="Controle de Versão - Git" id="git">
+        <p>O Git é um programa de controle de versão. Ele permite gerenciar as modificações dos arquivos, permitindo recuperar versões anteriores e também facilita o controle de modificações de vários usuários que possam estar alterando o código ao mesmo tempo. Ele é muito útil para recuperar algum ponto do programa caso alguma modificação tenha dado errado. Ele é mais útil ainda quando se programa em grupo, pois permite mesclar a alterações feitas por várias pessoas ao mesmo tempo e manter todo mundo atualizado nas modificações, permitindo o trabalho em equipe de forma mais produtiva. O Git é gerenciador de versões padrão do VSCode</p>
+        <h5> Baixando o Git </h5>
+            <ul>
+                <li>Acesse <a target= "_blank" href="https://git-scm.com/">https://git-scm.com/</a> </li>
+                <li>Clique em downloads. Clique em Windows. Após download, execute o instalador</li> 
+                <li>Na parte que define o caminho de instalação modifique para <code>C:\git</code> devido a política de instalação de programas da Vivo.</li>
+                <li>Na parte que define o editor do Git, selecione o Notepad++ a não ser que você já tenha experiência com o vim(editor padrão) que tem uma lógica um pouco diferente dos editores tradicionais e é um pouco complicado para iniciantes.</li>
+                <li>Deixe as demais opções na seleção padrão.</li>
+            </ul>
+        <h5>Configurando o Git</h5>
+            <p>Aperte no iniciar > Executar e digite o comando: <code>git config --edit --global</code> para editar a configuração. Adicione as seguintes linhas, trocando para os seus dados(Pode escolher um nome de usuário conforme sua preferência):
+                <pre><code>[user]
+    email = vinicius.osouza@telefonica.com
+    name = viniciusoliveira </code></pre></p>
+        <p>Salve e feche o arquivo.</p>    
+        <p> Caso tenha problema de conectividade na rede da Telefonica ao usar o git,  acesse novamente as configurações e adicione também as seguintes linhas:</p>
+        <!--	[http]
+            #	Escolhar entre um proxy de VPN ou de rede Interna (Retire o # da frente)
+            # VPN
+            #	proxy = http://proxy.redecorp.br:8080/
+            # Rede Interna
+            #	proxy = http://10.240.58.39:8080 -->
+            <pre><code class="git">[http]
+    ; Selecione http://10.240.58.39:8080 para rede interna e http://proxy.redecorp.br:8080/ para VPN
+    proxy=http://10.240.58.39:8080
+    https-proxy=http://10.240.58.39:8080</code></pre>
+        <p>Salve e feche o arquivo.</p>
+        <h5>Configurando o git e o prompt de comando no VSCode</h5>
+            <ul>
+                <li>Incie o VSCode e aperte <kbd>ctrl + ,</kbd> para entrar nas configurações. Para visualizar as configurações do VSCode como um arquivo texto(JSON) clique no ícone <code>{}</code> no canto superior direito. No lado esquerdo as configurações padrões (somente leitura) e do lado direito as configurações alteradas pelo usuário.</li>
+                <li>Copie e cole as configurações no lado direito.
+                <!--		 (Selecione http://10.240.58.39:8080 para rede interna e http://proxy.redecorp.br:8080/ para VPN)
+                    "http.proxy": http://proxy.redecorp.br:8080/,
+                    -->
+                <pre><code>{	"http.proxyStrictSSL": false,
+    "git.path": "c:\\Git\\bin\\git.exe"
+    "terminal.integrated.shell.windows": "C:\\WINDOWS\\System32\\cmd.exe"
+}</code></pre>
+                <p>Salve e feche o arquivo.</p>    
+                </li>
+            </ul>
+    </t>
+    <t t="Azure DevOps" id="vsts">
+    <p>O GitHub é um dos sites mais famosos para hospedagem de projetos git, no entanto somente permite projetos privados através de assinatura. Funcionários da telefonica através do Office 365, tem a opção de utilizar o Azure DevOps gratuitamente que permite armazenar os projetos na nuvem de forma privada e distribuí-los através do Git.</p>
+    <h5>Criando um repositorio</h5>
+    <ul>
+        <li>Acesse <a target= "_blank" href="https://azure.microsoft.com/pt-br/services/devops/">https://azure.microsoft.com/pt-br/services/devops/</a> </li>
+        <li>Clique em entrar (sign-in) no canto superior direito</li> 
+        <li>Digite o seu e-mail da Telefonica e senha de rede da telefonica</li>
+        <li>Complete seu cadastro</li>
+        <li>Peça para autorizar a entrada na organização <b>https://dev.azure.com/davnorte/</b> ou crie uma própria</li>
+        <li>Clique em criar um novo projeto.</li>
+        <li>Digite o nome e descrição do Projeto. Clique em Avançado, e confirme que o controle de versão é do tipo Git, depois clique em <i>Create</i>.</li>
+        <li>Clique em <b>Repos</b>. Um Link será gerado. Para exemplo, criamos o projeto Analytics e o link <code>https://davnorte@dev.azure.com/davnorte/analytics/_git/analytics</code> foi gerado.</li>
+        <li>Crie uma pasta nova do seu projeto. Ex:<code>analytics</code> e abra essa pasta no Visual Studio Code.</li>
+        <li>No Visual studio code aperte <kbd>ctrl+shift+p</kbd> para abrir a Paleta de Comando.</li>
+        <li>Digite a palavra <b>git</b> para ver todos os comandos do Git.</li>
+        <li>Clique em <b>Git: Initialize Repository</b> e selecione a pasta do seu projeto.</li>
+        <li>Abra novamente a paleta de comando, digite <b>Git: Add Remote</b></li>
+        <li>Digite <b>origin</b> como nome do repositorio e depois digite o link do repositório <b>https://davnorte@dev.azure.com/davnorte/analytics/_git/analytics</b>.</li>
+    </ul>
+    <p>Até o momento realizamos o processo de inicialização. Esses passos anteriores serão realizados apenas 1 vez.</p>
+    <h5>Adicionando arquivos e sincronizando o projeto com o repositório git</h5>
+    <p>Apert <kbd>ctrl+'</kbd> para abrir o terminal e inicialize um projeto NPM com as opções padrões:</p>
+    <pre><code class="shell">$ npm init -y</code></pre>
+    <p>Basicamente todas as modificações do seu projeto serão executadas pelos ciclos abaixo. Abra a paleta de comando no VSC (<kbd>ctrl+shift+p</kbd>) e digite:</p>
+    <ul>
+        <li><b>Git: Stage All Changes</b> para informar que todos os arquivos atuais devem ser monitorados pelo git (nesse caso apenas o package.json).</li>
+        <li><b>Git: Commit</b>. Para realizar o commit (que todas as mudanças foram realizadas e o arquivo está pronto para ir ao repositório). Para a messagem de commit, pode informar <i>"Commit Inicial"</i></li>
+        <li><b>Git: Push to</b> para realizar o upload dos arquivos para o repositório. Informe o repositorio <i>origin</i></li>
+        <li>Deve aparece uma caixa de login. Digite as suas credenciais.</li>
+        <li>Pronto o repositório remoto já está sincronizado com o repositório local</li>
+    </ul>
+<!-- 
+$ rmdir /S .git
+$ git init
+$ git add .
+$ git commit -m "Commit Inicial"
+$ git remote add origin https://davnorte.visualstudio.com/analytics/_git/analytics
+$ git push -u origin -all
+rmdir /S .git 
+-->
+    <p>Como todos os módulos NPM podem ser baixados via <code>npm install</code>, deve-se evitar que os módulos do NPM sejam sincronizados com o repositório VSTS. O site <a href="http://gitignore.io/">http://gitignore.io/</a> tem uma coleção de templates para vários tipos de projetos contendo as estruturas mais comuns que devem ser ignoradas. No nosso caso podemos começar com o do Node: <a href="https://gitignore.io/api/node">https://gitignore.io/api/node</a> e do Angular: <a href="https://gitignore.io/api/angular">https://gitignore.io/api/angular</a> que vai ignorar várias pastas e arquivos de manutenção. Basta criar um arquivo <code>.gitignore</code> na raiz do seu projeto e copiar e colar o conteudo do site.</p>  
+    </t>
+    <t t="Angular">
+        <p>O Angular é um framework para utilizar como front-end em páginas SPA, que contém apenas 1 arquivo index.html de inicialização e é fortemente concentrada com javascript. Desde a versão 2, o Angular conta com a ferramenta de desenvolvimento <b>Angular CLI</b> disponível no NPM. O <b>Angular CLI</b> é responsável por criar um ambiente de desenvolvimento completo composto por: <a href="https://webpack.js.org/">Webpack</a>, <a href="https://www.protractortest.org/">Protactor</a>, <a href="https://karma-runner.github.io/">Karma</a>, <a href="https://jasmine.github.io/">Jasmine</a>, <a href="https://palantir.github.io/tslint/">TSLint</a>,<a href="https://www.typescriptlang.org/">Typescript</a> entre outros. Para baixar o Angular CLI:</p> 
+        <pre><code class="sheel">$ npm install -g @angular/cli</code></pre>
+        <p>Outra ferramenta complementar é o <a href="https://marketplace.visualstudio.com/items?itemName=nrwl.angular-console">Angular Console</a> que fornece uma interface gráfica ao Angular CLI para utilização no Visual Studio Code.<br/>
+        <img src="https://raw.githubusercontent.com/nrwl/angular-console/master/static/angular-console-plugin.gif"/></p>
+    </t>
+    <t t="MongoDB">
+        <p>MongoDB é uma ferramenta para guardar informações utilizando NoSQL que utiliza o formato JSON binário (BSON) que é extremamente simples de manipular via javascript. Normalmente utilizar banco de dados relacionais (Ex:MySQL) exigirá que você transforme os dados em JSON aumentando a complexidade do projeto. Assim rapidamente o MongoDB se tornou um padrão do mundo Javascript. Caso não tenha instalado o MongoDB, é possível instalar conforme abaixo:</p>
+        <t t="Baixando o MongoDB">
+            <ul>
+                <li>Acesse <a target= "_blank" href="https://www.mongodb.com/">https://www.mongodb.com/</a> </li>
+                <li>Clique em Get MongoDB. Clique em Server e Escolha a versão <i>Current Release</i> na versão <i>MSI</i> de instalador.</li>
+                <li>Após download, execute o instalador</li>
+                <li>Clique em Complete.</li>
+                <li>Deixe as demais opções na seleção padrão.</li>
+            </ul>
+        </t>
+        <t t="Baixando o MongoDB Compass">
+            <p>O MongoDB Compass é o GUI para navegar nos documentos do MongoDB</p>
+            <ul>
+                <li>Acesse <a target= "_blank" href="https://www.mongodb.com/">https://www.mongodb.com/</a> </li>
+                <li>Clique em Get MongoDB. Clique em Tools e Escolha a versão <i>Community Edition Stable</i></li>
+                <li>Após download, execute o instalador</li>
+            </ul>
+        </t>
+        <p>Na seção vista anteriormente sobre <a href="#bd">banco de dados</a> tem um exemplo de como instalar o utilizar o módulo NPM <code>mongodb</code>.</p>
+    </t>
+    <t t="Express" id="mean-express">
+    <p>O módulo <code>http</code> vem na instalação padrão e permite aceitar requests e enviar responses através de uma porta. No entanto o <code>http</code> precisa de uma configuração para cada request e response a ser realizado, dando bastante trabalho até para botar uma página estática no ar. Para facilitar, rapidamente surgiram frameworks no <b>NPM</b> que visam facilitar todo o processo como: <code>Express, Socket.io, Loopback.io, Meteor.JS</code>, entre vários outros. Um dos modulos mais famosos para facilitar esse processo é o <code>express</code>.</p>
+    <p>Crie um projeto (nova pasta e arquivo <code>package.json</code>).  Para criar um servidor web usando o módulo <code>http</code> precisariamos do script abaixo: </p>
+    <code>server.js</code><br/>
+    <pre><code class="javascript">const http = require('http');
+const fs = require('fs');
+const url = require('url');
+
+// Cria o servidor
+http.createServer( function (request, response) {   
+   var pathname = url.parse(request.url).pathname;  // Interpreta o request para descobrir qual página está acessando.
+   fs.readFile(pathname.substr(1), function (err, data) {   // Lê o arquivo solicitado no request do sistema de arquivos
+      if (err) {
+         console.log(err);
+         response.writeHead(404, {'Content-Type': 'text/html'});    //Page not found - HTTP Status: 404 : NOT FOUND
+      } else {	
+         response.writeHead(200, {'Content-Type': 'text/html'});	//Page found - HTTP Status: 200 : OK
+         response.write(data.toString());		
+      }
+      response.end();   // Envia o response para o navegador.
+   });   
+}).listen(8080);
+console.log('Server running at http://127.0.0.1:8080/'); // Mostra uma mensagem no stdout informando o endereço do servidor</code></pre>
+    <p>Uma das desvantagens do código acima é que ele somente consegue enviar responses <code>text/html</code>. Imagens, CSS e Javascritp serão enviados somente se adicionarmos mais linhas de código.</p>
+    <p>Com o <code>express</code> a função <code>static</code> permite servir qualquer conteúdo estático de forma simples. O código se transforma em: </p>
+    <code>server.js</code><br/>
+    <pre><code class="javascript">const express = require('express');
+    const app = express();
+    app.use('/', express.static('./'));
+    app.listen(8080);
+    console.log('Server running at http://127.0.0.1:8080/'); // Mostra uma mensagem no stdout informando o endereço do servidor</code></pre>
+    <p> Para testar instale o <code>express</code> localmente via via NPM :</p>
+    <pre><code class="shell">$ npm install express</code></pre>
+    <p>Crie uma página estática simples:</p>
+    <code>index.html</code><br/>
+    <pre><code class="html">
+    &lt;html>
+    &lt;head>
+        &lt;title>Sample Page&lt;/title>
+    &lt;/head>
+    
+    &lt;body>
+        Hello World!
+    &lt;/body>
+    &lt;/html></code></pre>
+    <p>Inicie o servidor </p>
+    <pre><code class="shell">$ node server.js</code></pre>
+    <p>Agora digite o endereço <code>http://127.0.0.1:8080/index.htm</code> ou <code>http://localhost:8080</code> em qualquer navegador para visualizar o resultado. O navegador enviará um <b>request</b> para o servidor do Node.js e o navegador irá receber um <b>response</b> do servidor do Node</p>
+    <p>O console do Node.js exibirá a mensagem abaixo:</p>
+    <pre><code class="shell">$ node server.js
+    Server running at http://127.0.0.1:8080/
+    Request for /index.htm received.
+    </code></pre>
+    <p>O express também tem um ferramenta de desenvolvimento o <b>Express Generator</b>. Para instalar use:</p>
+    <pre><code class="shell">$ npm install -g express-generator</code></pre>
+    <p>Ele será uma ferramente útil para criação da API RESTFul.</p>
+    </t>
+</c>
+<!--
+<c t="API Node.JS" id="api">
+    <t t="fs" id="fsapi">
+        <table class="table table-sm">
+        <tr><th colspan="2">Manutenção de Permissões e propriedades dos arquivos</th></tr>
+        <tr><td colspan="2"><alert>O sistemas UNIX normalmente disponibilizam 3 versões de manutenção das propriedades: a original, prefixados pela letra <b>l</b> e prefixado pela letra <b>f</b>. Ex: fs.chmod / fs.<b>l</b>chmod / fs.<b>f</b>chmod :
+        <ul>
+            <li>normal: Executa a operação em um arquivo conforme o Path disponibilizado</li>
+            <li>prefixo l: Igual a normal mas ignora links simbólicos</li>
+            <li>prefixo f: Usa um fd ao invés de um path</li>
+        </ul>
+        </alert></td></tr>
+        <tr><td>fs.chmod(path, mode, callback)
+        <br/>fs.lchmod(path, mode, callback)
+        <br/>fs.fchmod(fd, mode, callback)</td><td>Altera a permissão de um arquivo</td></tr>
+        <tr><td>fs.chown(path, uid, gid, callback)
+        <br/>fs.lchown(path, uid, gid, callback)
+        <br/>fs.fchown(fd, uid, gid, callback)</td><td>Altera o proprietario de um grupo ou arquivo</td></tr>
+        <tr><td>fs.utimes(path, atime, mtime, callback)
+        <br/>fs.futimes(fd, atime, mtime, callback)</td><td>Altera o timestamp do arquivo</td></tr>            
+
+        <tr><th colspan="2">Lendo Arquivos</th></tr>
+        <tr><td>fs.read(fd, buffer, offset, length, position, callback)</td><td>Lê a informação do arquivo especificado pelo fd.</td></tr>
+        <tr><td>fs.readFile(path[, options], callback)</td><td>Lê todo o conteúdo do arquivo.</td></tr>
+        <tr><td>fs.truncate(path[, len], callback)
+        <br/>fs.ftruncate(fd[, len], callback)</td><td>Trunca o arquivo no tamanho especificado</td></tr>
+        <tr><td>fs.createReadStream(path[, options])</td><td>Cria um stream readable.</td></tr>
+        <tr><td>fs.createWriteStream(path[, options])</td><td>Cria um stream writable.</td></tr>
+
+        <tr><th colspan="2">Lendo informações do sistema de arquivos</th></tr>
+        <tr><td>fs.readdir(path[, options], callback)</td><td>Lê um diretório</td></tr>
+        <tr><td>fs.readlink(path[, options], callback)</td><td>Lê o valor de link simbolico do sistema de arquivos</td></tr>
+        <tr><td>fs.realpath(path[, options], callback)
+        <br/>fs.realpath.native(path[, options], callback)</td><td>Calcula o endereço completo de um path.</td></tr>
+
+        <tr><th colspan="2">Operações com Arquivos: Copiar, Deletar, Renomear, Link, Criar e Remover diretorios</th></tr>
+        <tr><td>fs.rename(oldPath, newPath, callback)</td><td> Renomeia um arquivo</td></tr>
+        <tr><td>fs.copyFile(src, dest[, flags], callback)</td><td>Copia um arquivo</td></tr>
+        <tr><td>fs.unlink(path, callback)</td><td>Apaga um arquivo ou um link simbolico</td></tr>
+        <tr><td>fs.symlink(target, path[, type], callback)</td><td>Cria um link simbolico de um arquivo</td></tr>
+        <tr><td>fs.link(existingPath, newPath, callback)</td><td>Cria um hard link de um arquivo</td></tr>
+        <tr><td>fs.mkdir(path[, options], callback)</td><td>Cria um diretório</td></tr>
+        <tr><td>fs.mkdtemp(prefix[, options], callback)</td><td>Cria um diretório temporário</td></tr>
+        <tr><td>fs.rmdir(path, callback)</td><td>Apaga um diretório</td></tr>
+        <tr><td>fs.fsync(fd, callback)
+        <br/>fs.fdatasync(fd, callback)</td><td>Sincroniza os dados de um arquivo com o HD</td></tr>
+
+        <tr><th colspan="2">Le status de arquivos e diretorios</th></tr>
+        <tr><td>fs.access(path[, mode], callback)</td><td>Testa a permissão de um usuário para arquivos e diretórios</td></tr>
+        <tr><td>fs.stat(path[, options], callback)
+        <br/>fs.lstat(path[, options], callback)
+        <br/>fs.fstat(fd[, options], callback)</td><td>Fornece um status de um arquivo</td></tr>
+
+        <tr><th colspan="2">Monitoria de arquivos</th></tr>
+        <tr><td>fs.watch(filename[, options][, listener])
+        <br/>fs.unwatchFile(filename[, listener])</td><td>Monitora um arquivo ou diretório por mundanças.</td></tr>
+    </table>
+    </t>
+</c>-->
+</root>
